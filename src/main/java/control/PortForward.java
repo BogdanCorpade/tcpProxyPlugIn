@@ -66,17 +66,17 @@ public class PortForward extends AbstractTestElement {
         this.eventSource = eventSource;
     }
 
-    private class serverControl implements Runnable {
-        @Override
-        public void run() {
-            try {
-                startTcpProxy();
-                System.out.println("S-a pornit proxy");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    private class serverControl implements Runnable {
+//        @Override
+//        public void run() {
+//            try {
+//                startTcpProxy();
+//                System.out.println("S-a pornit proxy");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     public void startServer() {
         t = new Thread() {
@@ -84,7 +84,7 @@ public class PortForward extends AbstractTestElement {
             public void run() {
                 try {
                     startTcpProxy();
-                } catch (IOException  e) {
+                } catch (IOException e) {
                     System.out.println("IOException catched!");
                 }
             }
@@ -92,12 +92,12 @@ public class PortForward extends AbstractTestElement {
         t.start();
     }
 
-    public void stopServer(){
+    public void stopServer() {
         isRunning = false;
         try {
             info(null, "stopping server...");
             serverSocket.close();
-        } catch (SocketException e){
+        } catch (SocketException e) {
             System.out.println(" ok Exception ");
             e.printStackTrace();
         } catch (IOException | NullPointerException e) {
@@ -105,7 +105,7 @@ public class PortForward extends AbstractTestElement {
         }
     }
 
-        public void startTcpProxy() throws IOException {
+    public void startTcpProxy() throws IOException {
         isRunning = true;
         if (getLocalPort() != 0 && getRemotePort() != 0 && getRemoteServerName() != "") {
             int localPort = getLocalPort();
@@ -124,33 +124,34 @@ public class PortForward extends AbstractTestElement {
 //        forward(localPort, remoteServerName, remotePort);
 //    }
 
-    private  void forward(final int lport, final String remote, final int rport) throws IOException {
-        Socket toClient,toServer = null;
-        serverSocket = new ServerSocket(lport);
-//        System.out.println("local port " + lport + " -> " + remote + ":" + rport+"bind local port ok");
-        info(null, "local port " + lport + " -> " + remote + ":" + rport);
+    private void forward(final int localPort, final String remoteServerName, final int remotePort) throws IOException {
+        Socket toClient, toServer = null;
+        serverSocket = new ServerSocket(localPort);
+//        System.out.println("local port " + localPort + " -> " + remoteServerName + ":" + remotePort+"bind local port ok");
+        info(null, "local port " + localPort + " -> " + remoteServerName + ":" + remotePort);
         info(null, "bind local port ok");
         while (isRunning) {
             toClient = serverSocket.accept();
-            toServer = new Socket(remote, rport);
+            toServer = new Socket(remoteServerName, remotePort);
             info(toClient.getRemoteSocketAddress(), "accepted, begin to forward  ");
             forward(toServer, toClient);
         }
     }
 
-    private  void forward(final Socket toServer, final Socket toClient) {
-        final SocketAddress clientip = toClient.getRemoteSocketAddress();
+    private void forward(final Socket toServer, final Socket toClient) {
+        final SocketAddress clientIp = toClient.getRemoteSocketAddress();
         try {
-            forwardStream(clientip, toClient.getInputStream(), toServer.getOutputStream(), "send----->");
-            forwardStream(clientip, toServer.getInputStream(), toClient.getOutputStream(), "receive----->");
+            forwardStream(clientIp, toClient.getInputStream(), toServer.getOutputStream(), "send----->");
+            forwardStream(clientIp, toServer.getInputStream(), toClient.getOutputStream(), "receive----->");
         } catch (IOException e) {
-            logIOException(clientip, "get(Input/Out)Stream", e);
+            logIOException(clientIp, "get(Input/Out)Stream", e);
         }
     }
 
-    private  void forwardStream(final SocketAddress clientip, final InputStream inputStream, final OutputStream outputStream, final String action) {
+    private void forwardStream(final SocketAddress clientIp, final InputStream inputStream, final OutputStream outputStream, final String action) {
         new Thread() {
             public void run() {
+                System.out.println("a intrat in forward stream");
                 final byte[] read = new byte[4096];
                 int cnt = 0;
                 final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -159,7 +160,7 @@ public class PortForward extends AbstractTestElement {
                     try {
                         readed = inputStream.read(read);
                     } catch (IOException e) {
-                        logIOException(clientip, action, e);
+                        logIOException(clientIp, action, e);
                         break;
                     }
                     if (readed != -1) {
@@ -170,8 +171,7 @@ public class PortForward extends AbstractTestElement {
                             cnt += readed;
                             continue;
                         } catch (IOException e) {
-                            System.out.println("a doua exceptie");
-                            logIOException(clientip, String.valueOf(action) + " forward   ", e);
+                            logIOException(clientIp, String.valueOf(action) + " forward   ", e);
                         }
                         break;
                     }
@@ -181,15 +181,15 @@ public class PortForward extends AbstractTestElement {
                     inputStream.close();
                     outputStream.close();
                 } catch (IOException e) {
-                    logIOException(clientip, action, e);
+                    logIOException(clientIp, action, e);
                 }
-                info(clientip, String.valueOf(action) + " forward bytes count " + cnt);
-                //info(clientip, String.valueOf(action) + "byte[]:" + PortForward.toHexStr(bytes.toByteArray()));
+                info(clientIp, String.valueOf(action) + " forward bytes count " + cnt);
+                info(clientIp, String.valueOf(action) + "byte[]:" + PortForward.toHexStr(bytes.toByteArray()));
                 try {
-                    info(clientip, String.valueOf(action) + "string:" + new String(bytes.toByteArray(), "GBK"));
+                    info(clientIp, String.valueOf(action) + "string:" + new String(bytes.toByteArray(), "GBK"));
                 } catch (UnsupportedEncodingException ex) {
                 }
-                info(clientip, String.valueOf(action) + " forward end.");
+                info(clientIp, String.valueOf(action) + " forward end.");
             }
         }.start();
     }
@@ -205,11 +205,11 @@ public class PortForward extends AbstractTestElement {
         return buffer.toString();
     }
 
-    private static void logIOException(final SocketAddress ip, final String action, final IOException e) {
+    private void logIOException(final SocketAddress ip, final String action, final IOException e) {
         System.out.println(String.valueOf(PortForward.fm.format(new Date())) + " " + ip + "\t " + action + " : " + e.getMessage());
     }
 
-    private  void info(final SocketAddress ip, final String action) {
+    private void info(final SocketAddress ip, final String action) {
         if (ip == null) {
             eventSource.publishEvent(new LogEvent(String.valueOf(PortForward.fm.format(new Date())) + "\t " + action));
         } else {
