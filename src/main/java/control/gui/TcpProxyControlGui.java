@@ -36,11 +36,11 @@ public class TcpProxyControlGui extends org.apache.jmeter.control.gui.AbstractCo
 
     private JButton stop, start, clearResults;
 
-    private static final String ACTION_STOP = "stop"; // $NON-NLS-1$
+    private static final String ACTION_STOP = "stop"; 
 
-    private static final String ACTION_START = "start"; // $NON-NLS-1$
+    private static final String ACTION_START = "start"; 
 
-    private static final String ACTION_CLEAR = "clear"; // $NON-NLS-1$
+    private static final String ACTION_CLEAR = "clear"; 
 
     private PortForward portForward;
 
@@ -72,7 +72,7 @@ public class TcpProxyControlGui extends org.apache.jmeter.control.gui.AbstractCo
 
     @Override
     public String getLabelResource() {
-        return "TCP Proxy Plug in"; // $NON-NLS-1$
+        return "TCP Proxy Plug in"; 
     }
 
     public String getStaticLabel() {
@@ -136,17 +136,17 @@ public class TcpProxyControlGui extends org.apache.jmeter.control.gui.AbstractCo
     }
 
     private JPanel createControls() {
-        start = new JButton(JMeterUtils.getResString("start")); // $NON-NLS-1$
+        start = new JButton(JMeterUtils.getResString("start")); 
         start.addActionListener(this);
         start.setActionCommand(ACTION_START);
         start.setEnabled(true);
 
-        stop = new JButton(JMeterUtils.getResString("stop")); // $NON-NLS-1$
+        stop = new JButton(JMeterUtils.getResString("stop")); 
         stop.addActionListener(this);
         stop.setActionCommand(ACTION_STOP);
         stop.setEnabled(false);
 
-        clearResults = new JButton("Clear Results"); // $NON-NLS-1$
+        clearResults = new JButton("Clear Results"); 
         clearResults.addActionListener(this);
         clearResults.setActionCommand(ACTION_CLEAR);
         clearResults.setEnabled(true);
@@ -162,23 +162,23 @@ public class TcpProxyControlGui extends org.apache.jmeter.control.gui.AbstractCo
         localPortField = new JTextField(PortForward.DEFAULT_PORT_S, 8);
         localPortField.setName(String.valueOf(PortForward.LOCAL_PORT));
 
-        JLabel label = new JLabel("Local Port"); // $NON-NLS-1$
+        JLabel label = new JLabel("Local Port"); 
         label.setLabelFor(localPortField);
 
         remotePortField = new JTextField(PortForward.DEFAULT_REMOTE_PORT_S, 8);
         remotePortField.setName(String.valueOf(PortForward.LOCAL_PORT));
 
-        JLabel label2 = new JLabel("Remote Port"); // $NON-NLS-1$
+        JLabel label2 = new JLabel("Remote Port"); 
         label.setLabelFor(remotePortField);
 
         remoteServerField = new JTextField(PortForward.REMOTE_SERVER_NAME, 8);
         remoteServerField.setName(String.valueOf(PortForward.LOCAL_PORT));
 
-        JLabel label3 = new JLabel("Remote Server Name"); // $NON-NLS-1$
+        JLabel label3 = new JLabel("Remote Server Name"); 
         label.setLabelFor(remoteServerField);
 
         HorizontalPanel panel = new HorizontalPanel();
-        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "TCP Proxy Settings")); // $NON-NLS-1$
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "TCP Proxy Settings"));
 
         panel.add(label);
         panel.add(localPortField);
@@ -196,12 +196,12 @@ public class TcpProxyControlGui extends org.apache.jmeter.control.gui.AbstractCo
         textArea = new JTextArea(10, 10);
         textArea.setLineWrap(true);
         textArea.setEditable(false);
-        JLabel textAreaLabel = new JLabel("Results:"); //$NON-NLS-1$
+        JLabel textAreaLabel = new JLabel("Results:");
         textAreaLabel.setLabelFor(textArea);
         JScrollPane scroll= new JScrollPane(textArea);
         textArea.setCaretPosition(textArea.getDocument().getLength());
         HorizontalPanel panel = new HorizontalPanel();
-        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "TCP Proxy")); // $NON-NLS-1$
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "TCP Proxy"));
         panel.add(textAreaLabel);
         ResponseHandler rh = new ResponseHandler(textArea);
         eventSource.addObserver(rh);
