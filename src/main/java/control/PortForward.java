@@ -29,34 +29,6 @@ public class PortForward extends AbstractTestElement {
     private ServerSocket serverSocket;
     private Thread t;
 
-//    public static void main(final String[] args) throws IOException {
-//        System.out.println("usage: localport remoteserver remoteport");
-//
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                InputStreamReader istream = new InputStreamReader(System.in);
-//                BufferedReader bufRead = new BufferedReader(istream);
-//                try {
-//                    System.out.println("Please Enter In Your First Name: ");
-//                    String firstName = bufRead.readLine();
-//                        stopServer();
-//                } catch (IOException err) {
-//                    System.out.println("Error reading line");
-//                }
-//            }
-//        }).start();
-//        try {
-//            startTcpProxy();
-//        } catch (IOException err) {
-//            System.out.println("am prins eroarea");
-//            try {
-//                startTcpProxy();
-//            } catch (IOException e1) {
-//                e1.printStackTrace();
-//            }
-//        }
-//    }
 
     static {
         PortForward.fm = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
@@ -66,17 +38,6 @@ public class PortForward extends AbstractTestElement {
         this.eventSource = eventSource;
     }
 
-//    private class serverControl implements Runnable {
-//        @Override
-//        public void run() {
-//            try {
-//                startTcpProxy();
-//                System.out.println("S-a pornit proxy");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
     public void startServer() {
         t = new Thread() {
@@ -116,13 +77,7 @@ public class PortForward extends AbstractTestElement {
             System.out.println("return.");
         }
     }
-//    public  void startTcpProxy() throws IOException {
-//        isRunning = true;
-//        int localPort = 8087;
-//        String remoteServerName = "mdr-mill01";
-//        int remotePort = 8081;
-//        forward(localPort, remoteServerName, remotePort);
-//    }
+
 
     private void forward(final int localPort, final String remoteServerName, final int remotePort) throws IOException {
         Socket toClient, toServer = null;
