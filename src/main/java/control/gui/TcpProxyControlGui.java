@@ -3,6 +3,7 @@ package main.java.control.gui;
 import main.java.control.EventSource;
 import main.java.control.PortForward;
 import main.java.control.ResponseHandler;
+import org.apache.jmeter.control.gui.AbstractControllerGui;
 import org.apache.jmeter.gui.JMeterGUIComponent;
 import org.apache.jmeter.gui.UnsharedComponent;
 import org.apache.jmeter.gui.util.HorizontalPanel;
@@ -19,7 +20,7 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class TcpProxyControlGui extends org.apache.jmeter.control.gui.AbstractControllerGui
+public class TcpProxyControlGui extends AbstractControllerGui
         implements JMeterGUIComponent, ActionListener, UnsharedComponent {
 
     private static final long serialVersionUID = 240L;
@@ -214,9 +215,9 @@ public class TcpProxyControlGui extends org.apache.jmeter.control.gui.AbstractCo
     @Override
     public void clearGui() {
         super.clearGui();
-        localPortField.setText(PortForward.DEFAULT_PORT_S);
-        remoteServerField.setText("cluj-bb-ci06");
-        remotePortField.setText("8080");
+//        localPortField.setText(PortForward.DEFAULT_PORT_S);
+//        remoteServerField.setText("localhost");
+//        remotePortField.setText("8080");
     }
 
 }

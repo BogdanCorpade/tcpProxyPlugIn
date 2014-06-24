@@ -96,7 +96,7 @@ public class PortForward extends AbstractTestElement {
     private void forward(final Socket toServer, final Socket toClient) {
         final SocketAddress clientIp = toClient.getRemoteSocketAddress();
         try {
-            forwardStream(clientIp, toClient.getInputStream(), toServer.getOutputStream(), "send----->");
+            forwardStream(clientIp, toClient.getInputStream(), toServer.getOutputStream(), "send   ----->");
             forwardStream(clientIp, toServer.getInputStream(), toClient.getOutputStream(), "receive----->");
         } catch (IOException e) {
             logIOException(clientIp, "get(Input/Out)Stream", e);
@@ -138,13 +138,13 @@ public class PortForward extends AbstractTestElement {
                 } catch (IOException e) {
                     logIOException(clientIp, action, e);
                 }
-                info(clientIp, String.valueOf(action) + " forward bytes count " + cnt);
-                info(clientIp, String.valueOf(action) + "byte[]:" + PortForward.toHexStr(bytes.toByteArray()));
+                //info(clientIp, String.valueOf(action) + " forward bytes count " + cnt);
+                //info(clientIp, String.valueOf(action) + "byte[]:" + PortForward.toHexStr(bytes.toByteArray()));
                 try {
                     info(clientIp, String.valueOf(action) + "string:" + new String(bytes.toByteArray(), "GBK"));
                 } catch (UnsupportedEncodingException ex) {
                 }
-                info(clientIp, String.valueOf(action) + " forward end.");
+//                info(clientIp, String.valueOf(action) + " forward end.");
             }
         }.start();
     }
